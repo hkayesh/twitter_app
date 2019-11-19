@@ -9,7 +9,7 @@ class DbOperations:
     def __init__(self):
         self.client = MongoClient(db_config['host'], db_config['port'])
         self.db = self.client[db_config['database']]
-        self.online_collection = self.db[db_config['collection']]
+        self.collection = self.db[db_config['collection']]
 
     def insert_tweet(self, tweet):
 
@@ -19,9 +19,12 @@ class DbOperations:
         # grab the 'created_at' data from the Tweet to use for display
 
         if not datajson['retweeted'] and not datajson['text'].startswith('RT @') and datajson['lang'] == 'en':
+            print("A new tweet collected at " + datajson['created_at'])
             datajson['created_at'] = parse(datajson['created_at']).timestamp()
-            insert_id = self.online_collection.insert(datajson)
-            print("Tweet collected with id " + str(insert_id))
+
+            # insert the data into the mongoDB into a collection called twitter_search
+            # if twitter_search doesn't exist, it will be created.
+            self.collection.insert(datajson)
 
     def get_last_tweet(self):
-        return self.online_collection.find_one({}, sort=[('_id', DESCENDING)])
+        return self.collection.find_one({}, sort=[('_id', DESCENDING)])

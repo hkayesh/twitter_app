@@ -1,9 +1,10 @@
 from data_collection.data_collector import DataCollector
-from config import auth_keys
+from settings import AUTH_SETTINGS as auth_keys
 
 if __name__ == '__main__':
     search_params = {
-        'words': ['#bigdata', '#AI', '#datascience', '#machinelearning', '#ml', '#iot']
+        'words': ['#cop25', '#cop25chile', '#cop25madrid', '#climateadaptation', '#climatechangeadaptation',
+                  '#adaptation', '#climatechange']
     }
 
     data_collector = DataCollector(search_params=search_params, auth_keys=auth_keys)
